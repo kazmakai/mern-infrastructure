@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { signUp } from "../../utilities/users-service";
 
 export default class SignUpForm extends Component {
     state = {
@@ -16,10 +17,23 @@ export default class SignUpForm extends Component {
         });
     };
 
-    handleSubmit = (event) => {    
+    handleSubmit = async (event) => {    
         event.preventDefault();
-        alert(JSON.stringify(this.state));
-    }
+        try {
+            // We don't want to send the 'error' or 'confirm' property,
+            // just define what need to be sent to the server
+            const formData = {
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password
+            };
+            const user = await signUp(formData);
+            console.log(user)
+        } catch {
+            // An error occured
+            this.setState({ error: 'Sign Up FAiled - Try Again' });
+        }
+    };
 
     render() {
         const disable = this.state.password !== this.state.confirm;

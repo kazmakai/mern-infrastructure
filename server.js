@@ -27,7 +27,7 @@ app.listen(port, () => {
 });
 
 // Define other routes HERE, before the default
-
+app.use('/api/users', require('./routes/api/users'));
 
 // This needs to be the last route
 // All unrecognized requests get served the home page
