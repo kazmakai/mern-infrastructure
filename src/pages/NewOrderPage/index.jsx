@@ -1,6 +1,8 @@
 const NewOrderPage = () => {
     return (
-        <h1>NewOrderPage</h1>
+        <div>
+            new order page
+        </div>
     );
 }
 

@@ -3,9 +3,7 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 
-// dotenv module
 require('dotenv').config();
-// Connect to the database
 require('./config/database');
 
 const app = express();
@@ -17,7 +15,7 @@ app.use(express.json());
 // create-react-app has a "build" directory
 // vite uses the "dist" directory instead
 
-// app.use(favicon(path.join(_dirname, 'dist, 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'dist', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'dist')));
 
 const port = process.env.PORT || 3001;
@@ -29,9 +27,9 @@ app.listen(port, () => {
 // Define other routes HERE, before the default
 app.use('/api/users', require('./routes/api/users'));
 
-// This needs to be the last route
-// All unrecognized requests get served the home page
-// (i.e the React application):
+// This needs to be the last route:
+// All unrecognised GET requests get served the home page
+// (i.e. the React application):
 app.get('/*', (req, res) => {
-    res.sendFile(path.join(_dirname, 'dist', 'index.html'));
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });

@@ -1,32 +1,43 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-const User = require('../../models/user')
+const User = require('../../models/user');
 
-
-module.exports = {
-    create
-};
-
-async function create(req, res) {
+const create = async (req, res) => {
     try {
-        // Add the user to the database
         const user = await User.create(req.body);
-        // token will be a string
         const token = createJWT(user);
         res.json(token);
     } catch (err) {
-        // Client will check for non-2xx status code
-        // 400 = Bad Request
+        res.status(400).json(err);
+    }
+};
+
+const login = async (req, res) => {
+    try {
+        const user = await User.findOne({email: req.body.email});
+        const match = await bcrypt.compare(req.body.password, user.password);
+
+        if (!match) throw new Error('Invalid username or password');
+
+        const token = createJWT(user);
+        res.json(token);
+    } catch (err) {
         res.status(400).json(err);
     }
 }
 
 function createJWT(user) {
     return jwt.sign(
-        // data payloads
         { user },
         process.env.SECRET,
         { expiresIn: '24h' }
     );
 }
+
+
+module.exports = {
+    create,
+    login
+};
+
