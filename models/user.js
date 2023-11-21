@@ -8,6 +8,10 @@ const SALT_ROUNDS = 6 // 6 is a reasonable value
 const userSchema = new Schema({
     name: {
         type: String,
+        required: true
+    },
+    email: {
+        type: String,
         unique: true,
         trim: true, // trim spaces before and after hte string before saving
         lowercase: true, // converts the string to lowercase before saving
